@@ -29,8 +29,8 @@ public class ScoreInsert : MonoBehaviour
         btnIn = this.transform.GetComponent<Button>();
         btnEnd = this.transform.GetComponent<Button>();
         // 게임 시작할 때 난이도 설정 클릭하는 버튼 객체 불러오기
-        EASY = this.textMessage.GetComponent<Button>(); 
-        HARD = this.textMessage.GetCoponent<Button>();
+        //EASY = this.textMessage.GetComponent<Button>(); 
+        //HARD = this.textMessage.GetCoponent<Button>();
         //리스너 지정
         btnIn.onClick.AddListener(OnClickUpdate);
         btnEnd.onClick.AddListener(RetryGame);
@@ -38,33 +38,33 @@ public class ScoreInsert : MonoBehaviour
 
     public void OnClickUpdate()
     {
-        if(info == "Like that EASY")
+        if(info.name == "Like that EASY")
         {
             mysqlDB.sqlcmdall("INSERT INTO `player`(`musicnum`, `username`, `score`) VALUES (10, username.text, player.score)");
-        } else if(info == "Like that HARD")
+        } else if(info.name == "Like that HARD")
         {
             mysqlDB.sqlcmdall("INSERT INTO `player`(`musicnum`, `username`, `score`) VALUES (11, username.text, player.score)");
-        } else if(info == "Roboskater EASY")
+        } else if(info.name == "Roboskater EASY")
         {
             mysqlDB.sqlcmdall("INSERT INTO `player`(`musicnum`, `username`, `score`) VALUES (20, username.text, player.score)");
-        } else if(info == "Roboskater HARD")
+        } else if(info.name == "Roboskater HARD")
         {
             mysqlDB.sqlcmdall("INSERT INTO `player`(`musicnum`, `username`, `score`) VALUES (21, username.text, player.score)");
-        } else if(info == "Disco Knights EASY")
+        } else if(info.name == "Disco Knights EASY")
         {
             mysqlDB.sqlcmdall("INSERT INTO `player`(`musicnum`, `username`, `score`) VALUES (30, username.text, player.score)");
-        } else if(info == "Disco Knights HARD")
+        } else if(info.name == "Disco Knights HARD")
         {
             mysqlDB.sqlcmdall("INSERT INTO `player`(`musicnum`, `username`, `score`) VALUES (31, username.text, player.score)");
-        } else if(info == "Project-2-marioish EASY")
+        } else if(info.name == "Project-2-marioish EASY")
         {
             mysqlDB.sqlcmdall("INSERT INTO `player`(`musicnum`, `username`, `score`) VALUES (40, username.text, player.score)");
-        } else if(info == "Project-2-marioish HARD")
+        } else if(info.name == "Project-2-marioish HARD")
         {
             mysqlDB.sqlcmdall("INSERT INTO `player`(`musicnum`, `username`, `score`) VALUES (41, username.text, player.score)");
         } else
         {
-            printf("INSERT ERROR!!!\n");
+            Debug.Log("INSERT ERROR!!!\n");
         }
         
     }
