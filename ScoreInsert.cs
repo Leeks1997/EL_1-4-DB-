@@ -7,10 +7,28 @@ using UnityEngine.UI;
 //게임 종료 후, insert하는 cs
 public class ScoreInsert : MonoBehaviour
 {
+    // 버튼
+    public Button btnIn, btnEnd;
+    // 닉네임 입력
+    public InputField username;
+    // sql
     dbconn mysqlDB = new dbconn();
+    // 게임 오브젝트
+    private musicController music;
+
+    void Start()
+    {
+   music = GameObject.FindWithTag("Music").GetComponent<musicController>(); // 태그명이 Music인지는 아직 확인하지 못했으나 임의로 지정함.
+
+   btnIn = this.transform.GetComponent<Button>();
+   btnEnd = this.transform.GetComponent<Button>();
+   btnIn.onClick.AddListener(OnClickUpdate);
+   btnEnd.onClick.AddListener(RetryGame);
+    }
+
     public void OnClickUpdate()
     {
-        mysqlDB.sqlcmdall("INSERT INTO `player`(`musicnum`, `username`, `score`) VALUES (10,'LEE',100000)");
+        mysqlDB.sqlcmdall("INSERT INTO `player`(`musicnum`, `username`, `score`) VALUES (10, username.text, player.score)");
     }
     public void RetryGame()
     {
