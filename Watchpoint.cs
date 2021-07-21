@@ -1,4 +1,4 @@
-﻿// 여기를 건드려야 하는건가? UI 시작화면..?
+// 여기를 건드려야 하는건가? UI 시작화면..?
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
