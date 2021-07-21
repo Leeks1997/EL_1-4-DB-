@@ -21,9 +21,9 @@
 			echo "|runtime:" .$row['runtime'];
 			echo "|genre:" .$row['genre'];
 			echo "|bpm:" .$row['bpm'];
+			echo ";";
 		}
 	}else {
 		echo "music not found";
 	}
-	
 ?>
