@@ -14,15 +14,26 @@ public class Watchpoint : MonoBehaviour
 
     public float dist = 10.0f;
 
-    private GameObject preGaze;//이전에 응시중이었던것
-    private GameObject curGaze;//현재 응시중인것
+    private GameObject preGaze; //이전에 응시중이었던것
+    private GameObject curGaze; //현재 응시중인것
+    
+    //main
+    private MusicList music; //음악 리스트 스크립트(함수 사용을 위함)
+    public static int musicButton = 0; //메인 음악 리스트 pageNumber
+
+    private OnClickLevel level; //메인 난이도 선택 스크립트(함수 사용을 위함)
+    
+    void Awake()
+    {
+        music = GameObject.Find("MusicList").GetComponent<MusicList>(); //main
+        level = GameObject.Find("Difficulty").GetComponent<OnClickLevel>(); //main
+    }
     void Start()
     {
         tr = GetComponent<Transform>();//메인 카메라의 Transform컴포넌트를 추출
         serialController = GameObject.Find("SerialController").GetComponent<SerialController>();
     }
-
-   
+    
     void Update()
     {
         string message = serialController.ReadSerialMessage(); //아두이노
@@ -89,23 +100,38 @@ public class Watchpoint : MonoBehaviour
         {
             case "PlayButton":
                 //게임 리스트(레벨선택->게임선택->그래야 게임시작가능)에서 선택할 수 있도록 해야함.
-                SceneManager.LoadScene("hardMap");
+                Debug.Log("GO!");
+                SceneManager.LoadScene("Scenes/Map/"+SelectPlay.musicNum);
                 break;
             case "easy":
-                //레벨
+                //레벨(EASY)
+                level.OnClickEasy();
                 break;
             case "hard":
-                //레벨
+                //레벨(HARD)
+                level.OnClickHard();
                 break;
-            case "ChangeNicknameBtn":
+            case "scrollUp":
+                //MusicList의 출력 아이템 변경(앞->뒤)
+                musicButton += 3;
+                musicButton = music.SetMusicItem(musicButton);
                 break;
-            case "soundUp":
+            case "scrollDown":
+                //MusicList의 출력 아이템 변경(뒤->앞)
+                musicButton -= 3;
+                musicButton = music.SetMusicItem(musicButton);
                 break;
-            case "soundDown":
+            case "item1":
+                //첫 번째 노래 선택
+                music.OnClickMusicItem(0);
                 break;
-            case "vibrationDown":
+            case "item2":
+                //두 번째 노래 선택
+                music.OnClickMusicItem(1);
                 break;
-            case "vibrationUp":
+            case "item3":
+                //세 번째 노래 선택
+                music.OnClickMusicItem(2);
                 break;
         }
     }
