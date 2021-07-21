@@ -1,8 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//랭킹의 값 설정 및 게임 맵 매칭
+//게임 맵 매칭
 
 public class SelectPlay : MonoBehaviour
 {
