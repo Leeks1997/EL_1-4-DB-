@@ -12,7 +12,7 @@
 	{
 		die("Connection Failed.". mysqli_connect_error());
 	}
-	
+	//musicNum의 사용자 정보 조회
 	$sql = "select username, score from player WHERE musicnum = ".$musicNum." order by score desc"; 
 	$result = mysqli_query($conn, $sql);
 		
