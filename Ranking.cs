@@ -72,6 +72,7 @@ public class Ranking : MonoBehaviour
     IEnumerator GetRanking(int num) //랭킹(player)의 DB값 받아오기
     {
         WWWForm form = new WWWForm();
+        form.AddField("cmd", "all");
         form.AddField("numPost", num);
 
         WWW playerData = new WWW("http://122.32.165.55/musicPlayer_coex_D1.php", form);
