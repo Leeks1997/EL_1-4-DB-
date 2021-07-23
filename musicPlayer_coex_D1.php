@@ -5,7 +5,9 @@
 	$dbname = "coex";
 	
 	$cmd = $_POST["cmd"]; //실행할 쿼리 구문
-	$cmdNum = $_POST["numPost"]; //사용할 인자 값
+	$musicNum = $_POST["numPost"]; //select & insert 음악 번호
+	$nickname = $_POST["namePost"]; //insert 사용자 이름
+	$scoreNum = $_POST["scorePost"]; //insert & count(*) 사용자 점수
 	
 	$conn = new mysqli($servername, $server_username, $server_password, $dbname);
 	
@@ -16,7 +18,7 @@
 
 	if($cmd == "all"){
 		//cmdNum의 사용자 정보 조회
-		$sql = "select username, score from player WHERE musicnum = ".$cmdNum." order by score desc"; 
+		$sql = "select username, score from player WHERE musicnum = ".$musicNum." order by score desc"; 
 		$result = mysqli_query($conn, $sql);
 
 		if(mysqli_num_rows($result) > 0){
@@ -30,7 +32,7 @@
 		}
 	}else if($cmd == "rank"){
 		//cmdNum의 랭킹
-		$sql = "select COUNT(*)+1 AS rank from player WHERE score >= ".$cmdNum; 
+		$sql = "select COUNT(*)+1 AS rank from player WHERE musicnum = ".$musicNum." and score >= ".$scoreNum; 
 		$result = mysqli_query($conn, $sql);
 
 		if(mysqli_num_rows($result) > 0){
@@ -39,6 +41,17 @@
 			}
 		}else {
 			echo "rank not found";
+		}
+	}else if($cmd == "insert"){
+		//사용자 점수 저장
+		$sql = "insert into player VALUES (".$musicNum.", ".$nickname.", ".$scoreNum.")"; 
+		$result = mysqli_query($conn, $sql);
+
+		if($result==1)
+		{
+			echo "저장성공";
+		}else{
+			echo "저장실패";
 		}
 	}
 
