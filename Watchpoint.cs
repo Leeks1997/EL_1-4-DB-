@@ -17,16 +17,31 @@ public class Watchpoint : MonoBehaviour
     private GameObject preGaze; //이전에 응시중이었던것
     private GameObject curGaze; //현재 응시중인것
     
-    //main
-    private MusicList music; //음악 리스트 스크립트(함수 사용을 위함)
-    public static int musicButton = 0; //메인 음악 리스트 pageNumber
+    private KeyBoardCreate keyboard; //불러올 함수가 있는 스크립트
+    int[] stack = new int[300];
+    int stack_point = 0;
 
-    private OnClickLevel level; //메인 난이도 선택 스크립트(함수 사용을 위함)
+    //main
+    private MusicList music;
+    public static int musicButton = 0;
+
+    private Ranking rank;
+    public static int rankButton = 0;
+
+    private OnClickLevel level;
     
     void Awake()
     {
-        music = GameObject.Find("MusicList").GetComponent<MusicList>(); //main
-        level = GameObject.Find("Difficulty").GetComponent<OnClickLevel>(); //main
+        if (SceneManager.GetActiveScene().name == "InputName")
+        {
+            keyboard = GameObject.Find("Keyboard").GetComponent<KeyBoardCreate>();
+        }
+        else if(SceneManager.GetActiveScene().name == "MainMenu")
+        {
+            music = GameObject.Find("MusicList").GetComponent<MusicList>();
+            rank = GameObject.Find("RankInfo").GetComponent<Ranking>();
+            level = GameObject.Find("Difficulty").GetComponent<OnClickLevel>();
+        }
     }
     void Start()
     {
@@ -132,6 +147,121 @@ public class Watchpoint : MonoBehaviour
             case "item3":
                 //세 번째 노래 선택
                 music.OnClickMusicItem(2);
+                break;
+            case "rankScrollUp":
+                //MusicList의 출력 아이템 변경(앞->뒤)
+                rankButton += 1;
+                rankButton = rank.SetPlayer(rankButton);
+                break;
+            case "rankScrollDown":
+                //MusicList의 출력 아이템 변경(뒤->앞)
+                rankButton -= 1;
+                rankButton = rank.SetPlayer(rankButton);
+                break;
+            case "ChangeNicknameBtn":
+                break;
+            case "soundUp":
+                break;
+            case "soundDown":
+                break;
+            case "vibrationDown":
+                break;
+            case "vibrationUp":
+                break;
+            case "InputButton":
+                keyboard.create();
+                stack = new int[300];
+                stack_point = 0;
+                break;
+            case "ButtonEnter":
+                stack[stack_point] = 10;//끝남을 의미
+                stack_point++;
+                keyboard.done(stack);
+                break;
+            case "ButtonCancel":
+                /*[완료]
+                 * 0은 2이상일때만 하나의 문자로 취급해야한다.
+                *중복된 숫자는 하나로 취급해야한다.
+                */
+                bool re = true;
+                while (re)
+                {
+                    if (stack[stack_point] == stack[stack_point - 1])
+                    {
+                        if (stack[stack_point] == stack[stack_point - 2])
+                        {
+                            //세번중복
+                            stack_point -= 3;
+                            stack[stack_point] = 10;//커서가 있는곳
+                        }
+                        else
+                        {
+                            //두번중복
+                            stack_point -= 2;
+                            stack[stack_point] = 10;//커서가 있는곳
+                        }
+                    }
+                    else
+                    {
+                        if (stack[stack_point] != 0)
+                        {
+                            //띄어쓰기 1단계-문자로 취급해서는 안된다. 그 전에 있는 것을 다시 실행
+                            re = false;
+                        }
+                        //한번중복
+                        stack_point--;
+                        stack[stack_point] = 10;//커서가 있는곳
+                    }
+                }
+                
+                break;
+            case "Button (0)":
+                stack[stack_point] = 0;
+                stack_point++;
+                break;
+            case "Button (1)":
+                stack[stack_point] = 1;
+                stack_point++;
+                break;
+            case "Button (2)":
+                stack[stack_point] = 2;
+                stack_point++;
+                break;
+            case "Button (3)":
+                stack[stack_point] = 3;
+                stack_point++;
+                break;
+            case "Button (4)":
+                stack[stack_point] = 4;
+                stack_point++;
+                break;
+            case "Button (5)":
+                stack[stack_point] = 5;
+                stack_point++;
+                break;
+            case "Button (6)":
+                stack[stack_point] = 6;
+                stack_point++;
+                break;
+            case "Button (7)":
+                stack[stack_point] = 7;
+                stack_point++;
+                break;
+            case "Button (8)":
+                stack[stack_point] = 8;
+                stack_point++;
+                break;
+            case "Button (9)":
+                stack[stack_point] = 9;
+                stack_point++;
+                break;
+            case "Register":
+                //DB에 사용자 정보 저장하기
+                ClearInfo.insert = true; //DB 입력 후, 씬 이동
+                break;
+            case "None":
+                //메인화면으로 돌아가기
+                SceneManager.LoadScene("Scenes/MainMenu");
                 break;
         }
     }
