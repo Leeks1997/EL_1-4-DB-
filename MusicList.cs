@@ -5,18 +5,6 @@ using UnityEngine.UI;
 
 public class MusicList : MonoBehaviour
 {
-    //ListMusic->item1->text
-    public Text musicTitleOne;
-    public Text musicComposerOne;
-    public Text genreOne;
-    //ListMusic->item2->text
-    public Text musicTitleTwo;
-    public Text musicComposerTwo;
-    public Text genreTwo;
-    //ListMusic->item3->text
-    public Text musicTitleThree;
-    public Text musicComposerThree;
-    public Text genreThree;
     //SelectedMusic->text
     public Text runTime;
     public Text bpm;
@@ -65,45 +53,39 @@ public class MusicList : MonoBehaviour
             i = (music.Length / 3) * 3;
         }
 
-        musicTitleOne.text = GetDataValue(music[i], "title:");
-        musicComposerOne.text = GetDataValue(music[i], "composer:");
-        genreOne.text = GetDataValue(music[i], "genre:");
-
-        //초기 선택된 음악(SelectedMusic) 출력 값 설정(첫 번째 아이템)
-        runTime.text = GetDataValue(music[i], "runtime:");
-        bpm.text = GetDataValue(music[i], "bpm:");
-        selectedMusic.text = GetDataValue(music[i], "title:");
-        //PLAY에 전달할 초기 title(곡 명) 값 지정
-        selectedMusicValue = GetDataValue(music[i], "title:"); 
-
-        if (i + 1 <= music.Length - 1) //2번째 item 값 존재
+        for(int a = 0; a < 3; a++)
         {
-            musicTitleTwo.text = GetDataValue(music[i + 1], "title:");
-            musicComposerTwo.text = GetDataValue(music[i + 1], "composer:");
-            genreTwo.text = GetDataValue(music[i + 1], "genre:");
-            if (i + 2 <= music.Length - 1) //3번째 item 값 존재
+            if(i + a > music.Length - 1 || music[i + a] == "") //배열 크기 확인 및 값의 유무(존재 X)
             {
-                musicTitleThree.text = GetDataValue(music[i + 2], "title:");
-                musicComposerThree.text = GetDataValue(music[i + 2], "composer:");
-                genreThree.text = GetDataValue(music[i + 2], "genre:");
+                //값 초기화
+                Text title = GameObject.Find("title" + a).GetComponent<Text>();
+                Text composer = GameObject.Find("composer" + a).GetComponent<Text>();
+                Text info = GameObject.Find("info" + a).GetComponent<Text>();
+
+                title.text = "";
+                composer.text = "";
+                info.text = "";
             }
             else
             {
-                //초기화
-                musicTitleThree.text = "";
-                musicComposerThree.text = "";
-                genreThree.text = "";
+                //값 지정
+                Text title = GameObject.Find("title" + a).GetComponent<Text>();
+                Text composer = GameObject.Find("composer" + a).GetComponent<Text>();
+                Text info = GameObject.Find("info" + a).GetComponent<Text>();
+
+                title.text = GetDataValue(music[i+a], "title:");
+                composer.text = GetDataValue(music[i + a], "composer:");
+                info.text = GetDataValue(music[i + a], "genre:");
+
+                if (a == 0) //초기 선택된 음악(SelectedMusic) 출력 값 설정(첫 번째 아이템)
+                {
+                    runTime.text = GetDataValue(music[i], "runtime:");
+                    bpm.text = GetDataValue(music[i], "bpm:");
+                    selectedMusic.text = GetDataValue(music[i], "title:");
+                    //PLAY에 전달할 초기 title(곡 명) 값 지정
+                    selectedMusicValue = GetDataValue(music[i], "title:");
+                }
             }
-        }
-        else
-        {
-            //초기화
-            musicTitleTwo.text = GetDataValue(music[i + 1], "");
-            musicComposerTwo.text = GetDataValue(music[i + 1], "");
-            genreTwo.text = GetDataValue(music[i + 1], "");
-            musicTitleThree.text = "";
-            musicComposerThree.text = "";
-            genreThree.text = "";
         }
 
         return i; //변경된 값 반환
