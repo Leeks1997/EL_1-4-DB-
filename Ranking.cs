@@ -41,11 +41,45 @@ public class Ranking : MonoBehaviour
 
     void Update()
     {
-        if(selectNum != SelectPlay.musicNum)
+        if (i >= player.Length - 1) //마지막 배열 값 ""이므로 제외, 배열 크기를 초과할 경우 0으로 리셋
         {
-            selectNum = SelectPlay.musicNum;
-            StartCoroutine(GetRanking(selectNum));
+            i = 0;
         }
+        else if (i < 0) //index가 0이하일 경우 마지막 첫번째 값으로 설정
+        {
+            i = (player.Length / 10) * 10;
+        }
+
+        Text b = GameObject.Find("rankCount").GetComponent<Text>(); //랭킹 페이지 버튼 값 설정
+        b.text = "" + i + 1;
+
+        for (int a = 0; a < 10; a++)
+        {
+            if (i * 10 + a > player.Length - 1 || player[i * 10 + a] == "") //배열 크기 확인 및 값의 유무(존재 X)
+            {
+                //값 초기화
+                Text t = GameObject.Find("rank" + a).GetComponent<Text>();
+                Text n = GameObject.Find("name" + a).GetComponent<Text>();
+                Text s = GameObject.Find("score" + a).GetComponent<Text>();
+
+                t.text = "";
+                n.text = "";
+                s.text = "";
+            }
+            else
+            {
+                //값 지정
+                Text t = GameObject.Find("rank" + a).GetComponent<Text>();
+                Text n = GameObject.Find("name" + a).GetComponent<Text>();
+                Text s = GameObject.Find("score" + a).GetComponent<Text>();
+
+                t.text = "" + i * 10 + a;
+                n.text = GetDataValue(player[i * 10 + a], "username:");
+                s.text = GetDataValue(player[i * 10 + a], "score:");
+            }
+        }
+
+        return i;
     }
 
     public int SetPlayer(int i)
@@ -80,7 +114,9 @@ public class Ranking : MonoBehaviour
         string playerDataString = playerData.text;
         Debug.Log(playerDataString); //받아온 값 확인
         player = playerDataString.Split(';');
-        Debug.Log(player.Length); //받아온 값 확인
+        //Debug.Log(player.Length); //받아온 값 확인
+        
+        SetPlayer(0); //초기 출력 설정
     }
 
     string GetDataValue(string data, string index1) //각 음악의 세부 정보 분리
